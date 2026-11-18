@@ -17,7 +17,7 @@ The repository is called `practice-repo-collaborative`. The Python package insid
 | | Path T · Terminal | Path B · Browser only |
 |---|---|---|
 | You need | git + VS Code (or Codespaces) | Only a web browser |
-| You practise | The real workflow, including local checks | The same workflow, but CI does all the checks |
+| You practise | The real workflow (local checks optional) | The same workflow, but CI does all the checks |
 | Choose it if | git works on your laptop | git doesn't work, or you want it simple |
 
 Both paths have the same five steps and end with the same pull request.
@@ -31,9 +31,13 @@ Both paths have the same five steps and end with the same pull request.
 Open https://github.com/open-energy-transition/practice-repo-collaborative → **Fork** (top right) → *Create fork*.
 You now have your own copy at `github.com/<you>/practice-repo-collaborative`.
 
+**Forked before the session?** Don't fork again. Open your fork → **Sync fork** → *Update branch*, so it has the latest changes.
+
 ## 2. Branch and add your file
 
 ### Path T · Terminal
+
+Use the terminal in VS Code (*Terminal* → *New Terminal*). **No Python setup needed.** CI runs all checks for you after you push. Only the optional step 2d uses Python.
 
 **Using Codespaces?** In your fork: *Code* → *Codespaces* → *Create codespace on main*. It is already cloned and set up: in 2a only run the `git remote add upstream` line, and in 2d skip the setup and run `pre-commit` directly.
 
@@ -48,6 +52,8 @@ git remote -v
 
 You should see `origin` (your fork) and `upstream` (the original).
 
+**You push with SSH?** Clone with `git@github.com:<you>/practice-repo-collaborative.git` instead. Use whichever worked in the morning session. Your fork's green **Code** button shows both URLs.
+
 **b. Create a branch.**
 
 ```bash
@@ -60,19 +66,19 @@ git switch -c data/<N>-<tech>
 cp data/technologies/ccgt.yaml data/technologies/<tech>.yaml
 ```
 
-**d. Check locally (optional).** pre-commit only sees files git knows about, so `git add` first:
+**d. Optional: check locally.** Skip this step unless you already set up Python before the session. Installing takes time, and CI runs the same checks after you push. pre-commit only sees files git knows about, so `git add` first:
 
 ```bash
 git add data/technologies/<tech>.yaml
 ```
 
-With uv:
+With uv (it sets up the environment by itself, the first run takes a minute):
 
 ```powershell
 uv run pre-commit run --all-files
 ```
 
-With pip (the first line only once):
+With pip (the first line only once, it installs into your normal Python):
 
 ```powershell
 python -m pip install -e . pytest pre-commit
@@ -131,7 +137,7 @@ If something is red:
 
 1. Click **Details** next to the failing check. Scroll to the end of the log. What does it complain about? See the hints below.
 2. Fix it:
-   - **Path T:** edit the file, `git add` it, run `pre-commit run --all-files`, then `git commit -s -m "data: fix <tech>"` and `git push`.
+   - **Path T:** edit the file, `git add` it, run the check from 2d if you set it up, then `git commit -s -m "data: fix <tech>"` and `git push`.
    - **Path B:** in your fork, switch to your branch, open the file → pencil icon → edit → *Commit changes* with the `Signed-off-by:` line as in 2c.
 3. The PR updates automatically. **Don't open a new PR.**
 
